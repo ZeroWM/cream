@@ -9,11 +9,6 @@
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
-    <modules>
-        <module>carrier-api</module>
-        <module>carrier-core</module>
-        <module>carrier-web</module>
-    </modules>
     <dependencyManagement>
         <dependencies>
             <dependency>
