@@ -7,6 +7,7 @@ import java.sql.*;
 /**
  * @program: cream
  * @description: 事务保存点应用demo
+ *              ps：对于这理解的还不是很清晰，savepoint地方相当于立一个flag,如果后续操作出现异常，就回滚到flag的位置重新提交事务。目前理解是这样的。
  * @author: WangMei
  * @create: 2018-12-17 15:08
  **/
@@ -36,28 +37,36 @@ public class JdbcTransactionSavePointsDemo {
             //STEP 5: Execute a query to create statment with
             // required arguments for RS example.
             System.out.println("Creating statement...");
-            stmt = conn.createStatement(
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            stmt = conn.createStatement();
 
-            //STEP 6: INSERT a row into Employees table
-            System.out.println("Inserting one row....");
-            String SQL = "INSERT INTO user " +
-                    "VALUES (7,'A')";
-            stmt.executeUpdate(SQL);
-
-            //STEP 7: INSERT one more row into Employees table
-            SQL = "INSERT INTO user " +
-                    "VALUES (8, 'B')";
-            stmt.executeUpdate(SQL);
-
-            //STEP 8: Commit data here.
-            System.out.println("Commiting data here....");
-            conn.commit();
-
-            //STEP 9: Now list all the available records.
-            String sql = "SELECT uuid, user_name FROM user";
+            //STEP 6: Now list all the available records.
+            String sql = "SELECT uuid,user_name FROM user";
             ResultSet rs = stmt.executeQuery(sql);
+            System.out.println("List result set for reference....");
+            printRs(rs);
+
+            // STEP 7: delete rows having ID equals 3
+            // But save point before doing so.
+            Savepoint savepoint1 = conn.setSavepoint("ROWS_DELETED_1");
+            System.out.println("Deleting row....");
+            String SQL = "DELETE FROM user " +
+                    "WHERE uuid = 3";
+            stmt.executeUpdate(SQL);
+
+            //STEP 8: Rollback the changes afetr save point 2.
+            conn.rollback(savepoint1);
+
+            // STEP 9: delete rows having ID equals 6
+            // But save point before doing so.
+            Savepoint savepoint2 = conn.setSavepoint("ROWS_DELETED_2");
+            System.out.println("Deleting row....");
+            SQL = "DELETE FROM user " +
+                    "WHERE uuid = 7";
+            stmt.executeUpdate(SQL);
+
+            //STEP 10: Now list all the available records.
+            sql = "SELECT uuid ,user_name FROM user";
+            rs = stmt.executeQuery(sql);
             System.out.println("List result set for reference....");
             printRs(rs);
 
