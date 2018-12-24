@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:sharding="http://shardingsphere.io/schema/shardingsphere/sharding"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/tx/spring-tx.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://shardingsphere.io/schema/shardingsphere/sharding
+                        http://shardingsphere.io/schema/shardingsphere/sharding/sharding.xsd">
+    <tx:annotation-driven/>
+
+    <!--业务操作数据源 -->
+    <bean id="cream_user" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${jdbc.user.url}"/>
+        <property name="username" value="${jdbc.user.username}"/>
+        <property name="password" value="${jdbc.user.password}"/>
+    </bean>
+
+    <bean id="preciseModuloTableShardingAlgorithm" class="shardingJdbcDemo.algorithm.PreciseModelTableShardingAlgorithm" />
+
+    <bean id="cream_order" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${jdbc.order.url}"/>
+        <property name="username" value="${jdbc.order.username}"/>
+        <property name="password" value="${jdbc.order.password}"/>
+    </bean>
+    <sharding:standard-strategy id="tableShardingStrategy" sharding-column="uuid"
+                                precise-algorithm-ref="preciseModuloTableShardingAlgorithm"/>
+
+
+    <sharding:data-source id="shardingUserDataSource">
+        <sharding:sharding-rule data-source-names="cream_user,cream_order">
+            <sharding:table-rules>
+                <sharding:table-rule logic-table="user"
+                                     actual-data-nodes="cream.user_$->{0..1}"
+                                     table-strategy-ref="tableShardingStrategy"
+                                     generate-key-column-name="uuid"/>
+                <sharding:table-rule logic-table="order"
+                                     actual-data-nodes="cream.user_$->{0..1}"
+                                     table-strategy-ref="tableShardingStrategy" />
+
+            </sharding:table-rules>
+        </sharding:sharding-rule>
+    </sharding:data-source>
+
+
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="shardingUserDataSource"/>
+        <property name="mapperLocations">
+            <array>
+                <value>classpath:mappers/*.xml</value>
+            </array>
+        </property>
+        <property name="typeAliasesPackage" value="shardingJdbcDemo.entity"/>
+
+    </bean>
+
+    <!-- scan for mappers and let them be autowired -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:basePackage="shardingJdbcDemo.repository"
+          p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
+
+
+</beans>
