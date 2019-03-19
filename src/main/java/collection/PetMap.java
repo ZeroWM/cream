@@ -18,5 +18,9 @@ public class PetMap {
         map.put("My Cat","ZhangXiaoLan");
         System.out.println("containsKey:" + map.containsKey("My Dog"));
         System.out.println("containsValue:" + map.containsValue("lan"));
+        System.out.println("keySet:" + map.keySet());
+        for(String key : map.keySet()){
+            System.out.println("key：" + key + " value:" + map.get(key));
+        }
     }
 }
