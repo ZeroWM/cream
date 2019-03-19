@@ -11,7 +11,8 @@ import java.util.*;
  * @create: 2019-03-14 15:22
  **/
 public class ListFeatures {
-//
+
+
 //    public static void main(String[] args) {
 //        List<Pet> pets = Pets.arrayList(7);
 //        System.out.println("2." + pets.toString());
@@ -50,38 +51,64 @@ public class ListFeatures {
 //
 //    }
 
+    /**
+     * Iterator遍历
+     * @param args
+     */
     public static void main(String[] args) {
-        Scanner sc=new Scanner(System.in);
-        System.out.println("请输入N个字符：");
-        String str=sc.next();
-        String[] arr=str.split(",");
-
-        List<String> list=new ArrayList<String>();
-        for(int i=0;i<arr.length;i++){
-            list.add(arr[i]);
+        List<Pet> petses = Pets.arrayList(9);
+        Iterator<Pet> iterator = petses.iterator();
+        while (iterator.hasNext()){
+            Pet p = iterator.next();
+            System.out.println(p.toString());
         }
-        System.out.println("原序输出：  "+list);
+        iterator = petses.iterator();
+        for(int i = 0 ; i < 2 ; i++){
+            iterator.next();
+            iterator.remove();
 
-        Collections.sort(list);
-        System.out.println("升序输出： "+list);
+        }
+        System.out.println(petses.toString());
 
-        Collections.sort(list,new Comparator<String>(){
-            public int compare(String o1, String o2) {
-                return o2.compareTo(o1);
-            }});
-        System.out.println("降序输出：   "+list);
-
-        Collections.reverse(list);
-        System.out.println("反转指定列表中元素的顺序     "+list);
-
-        Collections.shuffle(list);
-        System.out.println("随机序列" + list);
-//        Set set = new ArraySet(list);
-//        HashSet<String> set=new HashSet<String>(list);
-//        System.out.println("无序输出：  "+set);
-//        升序  Collections.sort(list)    降序  Collections.reserve(list)   随机  Collections.shuffle(list)
 
     }
+
+
+    /**
+     * 实现sort reverse shuffle
+     */
+//    public static void main(String[] args) {
+//        Scanner sc=new Scanner(System.in);
+//        System.out.println("请输入N个字符：");
+//        String str=sc.next();
+//        String[] arr=str.split(",");
+//
+//        List<String> list=new ArrayList<String>();
+//        for(int i=0;i<arr.length;i++){
+//            list.add(arr[i]);
+//        }
+//        System.out.println("原序输出：  "+list);
+//
+//        Collections.sort(list);
+//        System.out.println("升序输出： "+list);
+//
+//        Collections.sort(list,new Comparator<String>(){
+//            public int compare(String o1, String o2) {
+//                return o2.compareTo(o1);
+//            }});
+//        System.out.println("降序输出：   "+list);
+//
+//        Collections.reverse(list);
+//        System.out.println("反转指定列表中元素的顺序     "+list);
+//
+//        Collections.shuffle(list);
+//        System.out.println("随机序列" + list);
+////        Set set = new ArraySet(list);
+////        HashSet<String> set=new HashSet<String>(list);
+////        System.out.println("无序输出：  "+set);
+////        升序  Collections.sort(list)    降序  Collections.reserve(list)   随机  Collections.shuffle(list)
+//
+//    }
 
 
 }
