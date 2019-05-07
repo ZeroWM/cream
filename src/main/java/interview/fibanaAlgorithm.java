@@ -11,12 +11,17 @@ package interview;/**
 public class fibanaAlgorithm {
 
     public static void main(String[] args) {
-        long[] f = new long[50];
+        System.out.println(getFibenamiNo(50));
+
+    }
+    private static long getFibenamiNo(int no) {
+        long[] f = new long[no];
         f[0] = 1;
         f[1] = 1;
         for(int i = 2 ; i < 50 ; i++){
             f[i] = f[i-2] + f[i-1];
         }
-        System.out.println(f[49]);
+        return f[49];
     }
+
 }
