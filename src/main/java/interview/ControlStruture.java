@@ -4,11 +4,11 @@ package interview; /**
 
 /**
  * @program: switch的坑
- * @description: interview.controlStruture
+ * @description: interview.ControlStruture
  * @author: WangMei
  * @create: 2019-05-07 11:31
  **/
-public class controlStruture {
+public class ControlStruture {
 
     public  static  int testSwitch(int i ){
         int result = 0;

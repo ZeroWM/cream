@@ -8,7 +8,7 @@ package interview;/**
  * @author: WangMei
  * @create: 2019-05-07 11:41
  **/
-public class fibanaAlgorithm {
+public class FibanaAlgorithm {
 
     public static void main(String[] args) {
         System.out.println(getFibenamiNo(50));
