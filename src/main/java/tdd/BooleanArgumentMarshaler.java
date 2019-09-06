@@ -1,5 +1,7 @@
 package tdd;
 
+import java.util.Iterator;
+
 public class BooleanArgumentMarshaler implements ArgumentMarshaler{
     private boolean boolenValue = false;
 
@@ -10,7 +12,7 @@ public class BooleanArgumentMarshaler implements ArgumentMarshaler{
             return false;
     }
 
-    public void set(Iterable<String> currentArgument) throws ArgsException {
+    public void set(Iterator<String> currentArgument) throws ArgsException {
         boolenValue = true;
     }
 }

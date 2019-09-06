@@ -1,5 +1,7 @@
 package tdd;
 
+import java.util.Iterator;
+
 public class StringArrayArgumentMarshaler implements ArgumentMarshaler {
 
 
@@ -7,7 +9,7 @@ public class StringArrayArgumentMarshaler implements ArgumentMarshaler {
         return new String[0];
     }
 
-    public void set(Iterable<String> currentArgument) throws ArgsException {
+    public void set(Iterator<String> currentArgument) throws ArgsException {
 
     }
 }
